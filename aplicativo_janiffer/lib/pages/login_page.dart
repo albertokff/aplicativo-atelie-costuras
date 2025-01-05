@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:aplicativo_janiffer/components/input_field.dart';
-import 'package:aplicativo_janiffer/pages/main_page.dart';
+import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,7 +9,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  var usuarioController = TextEditingController(text: "");
+  var emailController = TextEditingController(text: "");
   var senhaController = TextEditingController(text: "");
 
   @override
@@ -24,73 +23,95 @@ class _LoginPageState extends State<LoginPage> {
               maxHeight: MediaQuery.of(context).size.height,
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 8,
-                      child: Image.asset('lib/assets/images/logo_janiffer.jpeg'),
+                Container(
+                  width: double.infinity,
+                  height: 850,
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(96, 25, 26, 1),
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(200)
                     )
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  "Ateliê de Ajustes",
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                  ),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 300,
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Text(
+                            "Janiffer",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold
+                            )
+                          )
+                        ],
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Text(
+                            "Favaretto",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 50,
+                              fontWeight: FontWeight.bold
+                            )
+                          )
+                        ],
+                      ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 50,
+                          ),
+                          Text(
+                            "Ateliê de Ajustes",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                            )
+                          )
+                        ],
+                      ),
+                      InputField(hint: "Email", controller: emailController, icon: Icons.email),
+                      InputField(hint: "Senha", controller: senhaController, icon: Icons.password),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 255, 255, 255),                          
+                          fixedSize: const Size(320, 50),
+                        ),
+                        onPressed: (){},
+                        child: 
+                        const Text(
+                          "Entrar",
+                        )
+                      )
+                    ]
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 50,
                 ),
                 const Text(
-                  "Entre e tenha acesso a todos os recursos",
+                  "@ Desenvolvido por Diogo Kirchoff",
                   style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.red)
-                ),
-                const SizedBox(
-                  height: 40
-                ),
-                InputField(hint: 'Usuário', controller: usuarioController, icon: Icons.person),
-                InputField(hint: 'Senha', controller: senhaController, icon: Icons.password,),
-                const SizedBox(
-                  height: 30,
-                ),
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 30),
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10)
-                        )
-                      ),
-                      onPressed: (){
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MainPage()));
-                      },
-                      child: const Text(
-                        "ENTRAR",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white
-                        ),
-                  ))
-                )
-            )],
+                    color: Color.fromRGBO(96, 25, 26, 1)),
+                )],
             )
             ))
         ),

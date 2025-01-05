@@ -18,6 +18,7 @@ class InputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [    
         Container(
+          color: Colors.white,
           width: double.infinity,
           margin: const EdgeInsets.symmetric(horizontal: 30),
           height: 30,
