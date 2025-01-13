@@ -18,6 +18,8 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
+          dragStartBehavior: ,
+          reverse: true,
           child: ConstrainedBox(
             constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height,
@@ -26,24 +28,27 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Container(
                   width: double.infinity,
-                  height: 850,
+                  height: 700,
                   decoration: const BoxDecoration(
                     color: Color.fromRGBO(96, 25, 26, 1),
                     borderRadius: BorderRadius.only(
                       bottomRight: Radius.circular(200)
-                    )
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black,
+                        blurRadius: 20
+                      )
+                    ]
                   ),
                   child: Column(
                     children: [
                       const SizedBox(
-                        height: 300,
+                        height: 50,
                       ),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 50,
-                          ),
                           Text(
                             "Janiffer",
                             style: TextStyle(
@@ -57,9 +62,6 @@ class _LoginPageState extends State<LoginPage> {
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: 50,
-                          ),
                           Text(
                             "Favaretto",
                             style: TextStyle(
@@ -70,7 +72,9 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       ),
-                      const Row(
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 55),
+                        child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           SizedBox(
@@ -80,37 +84,41 @@ class _LoginPageState extends State<LoginPage> {
                             "Ateliê de Ajustes",
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 20,
+                              fontSize: 14,
                             )
                           )
                         ],
                       ),
+                      ),
+                      const SizedBox(
+                        height: 100,
+                      ),
                       InputField(hint: "Email", controller: emailController, icon: Icons.email),
                       InputField(hint: "Senha", controller: senhaController, icon: Icons.password),
                       const SizedBox(
-                        height: 50,
+                        height: 100,
                       ),
-                      TextButton(
-                        style: TextButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 255, 255, 255),                          
-                          fixedSize: const Size(320, 50),
-                        ),
+                      ElevatedButton(
                         onPressed: (){},
-                        child: 
-                        const Text(
-                          "Entrar",
-                        )
-                      )
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                          fixedSize: const Size(300 , 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0)
+                          )
+                        ),
+                        child: const Text("Entrar")),
                     ]
                   ),
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
                 const Text(
                   "@ Desenvolvido por Diogo Kirchoff",
                   style: TextStyle(
-                    color: Color.fromRGBO(96, 25, 26, 1)),
+                    color: Color.fromRGBO(96, 25, 26, 1),
+                    fontWeight: FontWeight.bold),
                 )],
             )
             ))

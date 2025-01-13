@@ -19,9 +19,9 @@ class InputField extends StatelessWidget {
       children: [    
         Container(
           color: Colors.white,
-          width: double.infinity,
+          width: 300,
           margin: const EdgeInsets.symmetric(horizontal: 30),
-          height: 30,
+          height: 40,
           alignment: Alignment.center,
           child: TextField(
             controller: controller,
