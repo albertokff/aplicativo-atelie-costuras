@@ -18,7 +18,6 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          dragStartBehavior: ,
           reverse: true,
           child: ConstrainedBox(
             constraints: BoxConstraints(
