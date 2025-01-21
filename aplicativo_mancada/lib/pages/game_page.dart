@@ -70,18 +70,41 @@ class _GamePageState extends State<GamePage> {
                 ),)
               )
             ),
+           const Align(
+              alignment: Alignment(0, -0.5),
+              child: Text(
+                'Rodada atual',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ),
+            const Align(
+              alignment: Alignment(0, -0.4),
+              child: Text(
+                '- 1 Trinca \n- 2 Sequências',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ),
             Align(
-              alignment: const Alignment(0, 0.1),
+              alignment: const Alignment(0, 0.2),
                 child: Padding(
                   padding: const EdgeInsets.all(60.0),
                   child: Table(
                     border: TableBorder.all(
                       color: Colors.green,
-                      width: 1,
+                      width: 2,
                     ),
                     columnWidths: const {
-                      0: FlexColumnWidth(2),
-                      1: FlexColumnWidth(1),
+                      0: FlexColumnWidth(1),
+                      1: FlexColumnWidth(2),
+                      2: FlexColumnWidth(1),
                     },
                     children: [
                       const TableRow(
@@ -89,10 +112,22 @@ class _GamePageState extends State<GamePage> {
                           Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
+                              'Posição',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.green
+                              ),
+                              textAlign: TextAlign.center,)
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
                               'Jogadores',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16
+                                fontSize: 16,
+                                color: Colors.green
                               ),
                               textAlign: TextAlign.center,)
                           ),
@@ -102,7 +137,8 @@ class _GamePageState extends State<GamePage> {
                               'Pontos',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16
+                                fontSize: 16,
+                                color: Colors.green
                               ),
                               textAlign: TextAlign.center,)
                           )
@@ -111,6 +147,12 @@ class _GamePageState extends State<GamePage> {
                       for (var nome in nomes)
                         TableRow(
                           children: [
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text(
+                                '0',
+                                textAlign: TextAlign.center,)
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
@@ -128,6 +170,78 @@ class _GamePageState extends State<GamePage> {
                     ],
                   ),
                 )
+            ),
+            Align(
+              alignment: const Alignment(0, 0.7),
+              child: ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      // Modal com os TextFields
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        title: const Text(
+                          'Atualize os pontos',
+                          style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                        ),
+                        content: SizedBox(
+                          height: 500, // Altura da modal
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              for (var nome in nomes)                                
+                                TextField(
+                                  decoration: InputDecoration(
+                                    labelText: nome.trim(),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                            ],
+                          ),
+                        ),
+                        actions: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop(); // Fecha a modal
+                            },
+                            child: const Text('Cancelar'),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green,
+                            ),
+                            onPressed: () {
+                              // Lógica para salvar os dados
+                              Navigator.of(context).pop(); // Fecha a modal
+                            },
+                            child: const Text('Salvar'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  backgroundColor: Colors.green,
+                ),
+                child: const Text(
+                  'Próxima Rodada',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             ),
           ],
         ),
