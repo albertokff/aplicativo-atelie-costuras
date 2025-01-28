@@ -11,11 +11,31 @@ class GamePage extends StatefulWidget {
 }
 
 class _GamePageState extends State<GamePage> {
+  late Map<String, TextEditingController> pontuacao;
+  late List<String> nomes;
+
+  @override
+  void initState() {
+    super.initState();
+
+    nomes = widget.nomeJogadores.split(',');
+    pontuacao = {
+      for (var nome in nomes) 
+        nome.trim(): TextEditingController(text: '0')
+    };
+  }
+
+  @override
+  void dispose() {
+    for (var controller in pontuacao.values) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
-    List<String> nomes = widget.nomeJogadores.split(',');
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -61,16 +81,17 @@ class _GamePageState extends State<GamePage> {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                  'MANCADA',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.green[600],
-                    fontWeight: FontWeight.bold,
+                    'MANCADA',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.green[600],
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),)
-              )
+                ),
+              ),
             ),
-           const Align(
+            const Align(
               alignment: Alignment(0, -0.5),
               child: Text(
                 'Rodada atual',
@@ -79,7 +100,7 @@ class _GamePageState extends State<GamePage> {
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
                 ),
-              )
+              ),
             ),
             const Align(
               alignment: Alignment(0, -0.4),
@@ -90,86 +111,89 @@ class _GamePageState extends State<GamePage> {
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
                 ),
-              )
+              ),
             ),
             Align(
               alignment: const Alignment(0, 0.2),
-                child: Padding(
-                  padding: const EdgeInsets.all(60.0),
-                  child: Table(
-                    border: TableBorder.all(
-                      color: Colors.green,
-                      width: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(60.0),
+                child: Table(
+                  border: TableBorder.all(
+                    color: Colors.green,
+                    width: 2,
+                  ),
+                  columnWidths: const {
+                    0: FlexColumnWidth(1),
+                    1: FlexColumnWidth(2),
+                    2: FlexColumnWidth(1),
+                  },
+                  children: [
+                    const TableRow(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Posição',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.green),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Jogadores',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.green),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'Pontos',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                                color: Colors.green),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
                     ),
-                    columnWidths: const {
-                      0: FlexColumnWidth(1),
-                      1: FlexColumnWidth(2),
-                      2: FlexColumnWidth(1),
-                    },
-                    children: [
-                      const TableRow(
+                    for (var nome in nomes)
+                      TableRow(
                         children: [
-                          Padding(
+                          const Padding(
                             padding: EdgeInsets.all(8.0),
                             child: Text(
-                              'Posição',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.green
-                              ),
-                              textAlign: TextAlign.center,)
+                              '0',
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Jogadores',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.green
-                              ),
-                              textAlign: TextAlign.center,)
+                              nome.trim(),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           Padding(
-                            padding: EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              'Pontos',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: Colors.green
-                              ),
-                              textAlign: TextAlign.center,)
-                          )
+                              pontuacao[nome.trim()]?.text ?? '0',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ],
                       ),
-                      for (var nome in nomes)
-                        TableRow(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                '0',
-                                textAlign: TextAlign.center,)
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                nome.trim(),
-                                textAlign: TextAlign.center,)
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                '0',
-                                textAlign: TextAlign.center,)
-                            )
-                          ],
-                        ),
-                    ],
-                  ),
-                )
+                  ],
+                ),
+              ),
             ),
             Align(
               alignment: const Alignment(0, 0.7),
@@ -185,18 +209,30 @@ class _GamePageState extends State<GamePage> {
                         ),
                         title: const Text(
                           'Atualize os pontos',
-                          style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                              color: Colors.green, fontWeight: FontWeight.bold),
                         ),
                         content: SizedBox(
                           height: 500, // Altura da modal
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              for (var nome in nomes)                                
-                                TextField(
-                                  decoration: InputDecoration(
-                                    labelText: nome.trim(),
-                                    border: OutlineInputBorder(),
+                              for (var nome in nomes)
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: TextField(
+                                    controller: pontuacao[nome.trim()],
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      labelText: nome.trim(),
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                    onChanged: (String valor) {
+                                      debugPrint('nome considerado: $nome.trim()');
+                                      final int novoValor = int.tryParse(valor) ?? 0; 
+                                      pontuacao[nome.trim()]?.text = (int.tryParse(pontuacao[nome.trim()]!.text) !+ novoValor).toString(); 
+                                    },
+                                    
                                   ),
                                 ),
                             ],
@@ -208,6 +244,11 @@ class _GamePageState extends State<GamePage> {
                               backgroundColor: Colors.green,
                             ),
                             onPressed: () {
+                              setState(() {
+                                for (var nome in nomes) {
+                                  pontuacao[nome.trim()]?.text = '0';
+                                }
+                              });
                               Navigator.of(context).pop(); // Fecha a modal
                             },
                             child: const Text('Cancelar'),
@@ -217,8 +258,10 @@ class _GamePageState extends State<GamePage> {
                               backgroundColor: Colors.green,
                             ),
                             onPressed: () {
-                              // Lógica para salvar os dados
-                              Navigator.of(context).pop(); // Fecha a modal
+                              // debugPrint(pontuacao.toString());
+                              setState(() {});
+
+                              // Navigator.of(context).pop(); // Fecha a modal
                             },
                             child: const Text('Salvar'),
                           ),
