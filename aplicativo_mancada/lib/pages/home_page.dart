@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
             ),
             // Retângulo flutuante
             Align(
-              alignment: const Alignment(0, -0.7),
+              alignment: const Alignment(0, -0.9),
               child: Transform.rotate(
                 angle: -0.1,
                 child: Container(
@@ -69,19 +69,8 @@ class _HomePageState extends State<HomePage> {
                 ),)
               )
             ),
-            const Align(
-              alignment: Alignment(0, -0.4),
-              child: Text(
-                'Antes de começar, \ninforme o nome dos jogadores, \nseparados por vírgula:',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ),
             Align(
-              alignment: const Alignment(0, -0.1),
+              alignment: const Alignment(0, -0.3),
               child: Container(
                 width: 300, // Largura do retângulo
                 height: null, // Altura do retângulo
@@ -101,6 +90,11 @@ class _HomePageState extends State<HomePage> {
                   controller: nomeJogadoresController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
+                    hintText: 'Digite o nome dos jogadores, separados por VÍRGULA',
+                    hintStyle: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
+                    ),
                   ),
                   maxLines: null,
                   minLines: 5,
@@ -108,7 +102,7 @@ class _HomePageState extends State<HomePage> {
               )
             ),
             Align(
-              alignment: const Alignment(0, 0.7), // Botão mais para baixo
+              alignment: const Alignment(0, 0.4), // Botão mais para baixo
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
@@ -123,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: const Text('JOGAR',
                   style: TextStyle(
-                    fontSize: 60,
+                    fontSize: 20,
                     color: Colors.white
                   ),
               ),

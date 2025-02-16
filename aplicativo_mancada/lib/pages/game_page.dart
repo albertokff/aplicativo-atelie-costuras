@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:aplicativo_mancada/pages/login_page.dart';
 
 class GamePage extends StatefulWidget {
   final String nomeJogadores;
@@ -13,6 +14,19 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   late List<String> nomes;
   Map<String, dynamic> pontuacao = {};
+  int rodadaAtualIndex = 0;
+
+  final List<String> rodadas = [
+    '1 trinca \n 1 sequência',
+    '2 trincas \n 1 sequência',
+    '3 trincas',
+    '2 trincas \n 1 sequência',
+    '3 sequências',
+    '2 sequências \n 2 trincas',
+    '4 trincas',
+    '3 sequências \n 1 trinca',
+    '4 sequências',
+  ];
 
   @override
   void initState() {
@@ -26,6 +40,16 @@ class _GamePageState extends State<GamePage> {
           'posicao': 0
         }
     };
+  }
+
+  void _proximaRodada() {
+    setState(() {
+      if (rodadaAtualIndex < rodadas.length - 1) {
+        rodadaAtualIndex++;
+      } else {
+        rodadaAtualIndex = 0;
+      }
+    });
   }
 
   @override
@@ -75,7 +99,8 @@ class _GamePageState extends State<GamePage> {
           ),
           content: SizedBox(
             height: 500, // Altura da modal
-            child: Column(
+            child: SingleChildScrollView(
+              child: Column(
               mainAxisSize: MainAxisSize.min,
               children: pontuacao.keys.map((jogador) {
                 return Padding( // Adicione Padding para espaçamento
@@ -84,20 +109,20 @@ class _GamePageState extends State<GamePage> {
                     controller: controladores[jogador],
                     decoration: InputDecoration(
                       labelText: jogador,
-                      border: OutlineInputBorder(), // Adicione borda ao TextField
+                      border: const OutlineInputBorder(), // Adicione borda ao TextField
                     ),
                     keyboardType: TextInputType.number,
                   ),
                 );
               }).toList(),
-            ),
+            )),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () {
@@ -115,11 +140,13 @@ class _GamePageState extends State<GamePage> {
 
                 setState(() {
                   var jogadoresOrdenados = pontuacao.entries.toList()
-                    ..sort((a, b) => b.value['pontuacao'].compareTo(a.value['pontuacao']));
+                    ..sort((a, b) => a.value['pontuacao'].compareTo(b.value['pontuacao']));
 
                   for (int i = 0; i < jogadoresOrdenados.length; i++) {
                     pontuacao[jogadoresOrdenados[i].key]['posicao'] = i + 1;
                   }
+
+                  _proximaRodada();
                 }); // Atualiza a tabela
                 Navigator.of(context).pop();
               },
@@ -138,6 +165,7 @@ class _GamePageState extends State<GamePage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: Stack(
           children: [
             // Coluna principal com os Flexibles
@@ -159,7 +187,7 @@ class _GamePageState extends State<GamePage> {
             ),
             // Retângulo flutuante
             Align(
-              alignment: const Alignment(0, -0.7),
+              alignment: const Alignment(0, -0.9),
               child: Transform.rotate(
                 angle: -0.1,
                 child: Container(
@@ -200,11 +228,11 @@ class _GamePageState extends State<GamePage> {
                 ),
               ),
             ),
-            const Align(
-              alignment: Alignment(0, -0.4),
+            Align(
+              alignment: const Alignment(0, -0.4),
               child: Text(
-                '- 1 Trinca \n- 2 Sequências',
-                style: TextStyle(
+                rodadas[rodadaAtualIndex],
+                style: const TextStyle(
                   fontSize: 20,
                   color: Colors.green,
                   fontWeight: FontWeight.bold,
@@ -214,14 +242,14 @@ class _GamePageState extends State<GamePage> {
             Align(
               alignment: const Alignment(0, 0.2),
               child: Padding(
-                padding: const EdgeInsets.only(left: 60, right: 60),
+                padding: const EdgeInsets.only(left: 50, right: 50),
                 child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,                
                 children: <Widget>[
                   Table(
                     border: TableBorder.all(
                       color: Colors.green,
-                      width: 2.0,
+                      width: 1.0,
                       style: BorderStyle.solid
                     ),
                     children: [
@@ -234,7 +262,8 @@ class _GamePageState extends State<GamePage> {
                                   'Ranking',
                                   style: 
                                     TextStyle(
-                                      color: Colors.green
+                                      color: Colors.green,
+                                      fontSize: 20
                                     )
                                 )
                             )
@@ -247,7 +276,8 @@ class _GamePageState extends State<GamePage> {
                                   'Jogador',
                                   style: 
                                     TextStyle(
-                                      color: Colors.green
+                                      color: Colors.green,
+                                      fontSize: 20
                                     )
                                 )
                             )
@@ -260,7 +290,8 @@ class _GamePageState extends State<GamePage> {
                                   'Pontuação',
                                   style: 
                                     TextStyle(
-                                      color: Colors.green
+                                      color: Colors.green,
+                                      fontSize: 20
                                     )
                                 )
                             )
@@ -287,6 +318,28 @@ class _GamePageState extends State<GamePage> {
                 ),
                 child: const Text(
                   'Próxima Rodada',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: const Alignment(0, 0.82),
+              child: ElevatedButton(
+                onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  backgroundColor: Colors.red,
+                ),
+                child: const Text(
+                  'Sair',
                   style: TextStyle(
                     fontSize: 20,
                     color: Colors.white,

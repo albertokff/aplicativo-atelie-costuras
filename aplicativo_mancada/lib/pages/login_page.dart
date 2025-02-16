@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:aplicativo_mancada/pages/home_page.dart';
+import 'package:aplicativo_mancada/pages/howgame_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -92,7 +93,9 @@ class LoginPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HowGamePage()));
+                },
                 child: const Text('Como jogar?',
                   style: TextStyle(
                     fontSize: 20,
