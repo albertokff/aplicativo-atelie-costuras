@@ -15,6 +15,9 @@ class _GamePageState extends State<GamePage> {
   late List<String> nomes;
   Map<String, dynamic> pontuacao = {};
   int rodadaAtualIndex = 0;
+  bool finalDePartida = false;
+  String nomeVencedor = '';
+  int pontosVencedor = 0;
 
   final List<String> rodadas = [
     '1 trinca \n 1 sequência',
@@ -43,13 +46,18 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _proximaRodada() {
-    setState(() {
-      if (rodadaAtualIndex < rodadas.length - 1) {
-        rodadaAtualIndex++;
-      } else {
-        rodadaAtualIndex = 0;
-      }
-    });
+    debugPrint(rodadaAtualIndex.toString());
+    if (rodadaAtualIndex == 1) {
+        finalDePartida = true;
+    } else {
+      setState(() {
+            if (rodadaAtualIndex < rodadas.length - 1) {
+              rodadaAtualIndex++;
+            } else {
+              rodadaAtualIndex = 0;
+            }
+      });
+    }
   }
 
   @override
@@ -77,7 +85,94 @@ class _GamePageState extends State<GamePage> {
     }).toList();
   }
 
-  void _mostrarModal() {
+  void _modalFimPartida()
+  {
+    debugPrint('Modal chamada!');
+    
+    Map<String, TextEditingController> controladores = {};
+
+    pontuacao.forEach((jogador, pontos) {
+      controladores[jogador] = TextEditingController(text: '');
+    });
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Modal com os TextFields
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          title: const Text(
+            'Final de Jogo!',
+            style: TextStyle(
+                color: Colors.green, fontWeight: FontWeight.bold
+            ),
+            textAlign: TextAlign.center,
+          ),
+          content:  SizedBox(
+            height: 250, // Altura da modal
+            child: SingleChildScrollView(
+              child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [const Text(
+                'Parabéns ao vencedor dessa rodada:'
+              ),
+                Text(
+                  '$nomeVencedor: $pontosVencedor'
+              )]
+            )),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+              },
+              child: const Text('Sair'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Atualiza a pontuação de cada jogador
+                pontuacao.forEach((nome, dados) {
+                  int pontosRodada = int.tryParse(controladores[nome]!.text) ?? 0;
+
+                  pontuacao.update(nome, (dados) {
+                    return {
+                      'pontuacao': dados['pontuacao'] + pontosRodada,
+                      'posicao': dados['posicao']
+                    };
+                  });
+                });
+
+                setState(() {
+                  var jogadoresOrdenados = pontuacao.entries.toList()
+                    ..sort((a, b) => a.value['pontuacao'].compareTo(b.value['pontuacao']));
+
+                  for (int i = 0; i < jogadoresOrdenados.length; i++) {
+                    pontuacao[jogadoresOrdenados[i].key]['posicao'] = i + 1;
+                  }
+
+                  _proximaRodada();
+                }); // Atualiza a tabela
+                
+                if (finalDePartida) {
+                  Future.delayed(const Duration(milliseconds: 200), () {
+                    _modalFimPartida(); // Abre a próxima modal automaticamente
+                  });
+                }
+
+                Navigator.of(context).pop();
+                _mostrarModal();
+              },
+              child: const Text('Jogar Novamente'),
+            ),
+          ],
+        );
+      });
+  }
+
+  void _modalAtualizarPontuacoes()
+  {
     Map<String, TextEditingController> controladores = {};
 
     pontuacao.forEach((jogador, pontos) {
@@ -146,9 +241,18 @@ class _GamePageState extends State<GamePage> {
                     pontuacao[jogadoresOrdenados[i].key]['posicao'] = i + 1;
                   }
 
+                  nomeVencedor = jogadoresOrdenados.first.key;
+                  pontosVencedor = jogadoresOrdenados.first.value['pontuacao'];
+
                   _proximaRodada();
                 }); // Atualiza a tabela
                 Navigator.of(context).pop();
+
+                if (finalDePartida) {
+                  Future.delayed(const Duration(milliseconds: 200), () {
+                    _modalFimPartida(); // Abre a próxima modal automaticamente
+                  });
+                }
               },
               child: const Text('Confirmar'),
             ),
@@ -156,6 +260,10 @@ class _GamePageState extends State<GamePage> {
         );
       },
     );
+  }
+
+  void _mostrarModal() {
+     finalDePartida ? _modalFimPartida() : _modalAtualizarPontuacoes(); 
   }
 
   @override
@@ -217,27 +325,33 @@ class _GamePageState extends State<GamePage> {
                 ),
               ),
             ),
-            const Align(
-              alignment: Alignment(0, -0.5),
-              child: Text(
-                'Rodada atual',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
             Align(
-              alignment: const Alignment(0, -0.4),
-              child: Text(
-                rodadas[rodadaAtualIndex],
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold,
+              alignment: const Alignment(0, -0.5),
+              child: Container(
+                  width: 300, // Largura do retângulo
+                  height: 100, // Altura do retângulo
+                  decoration: BoxDecoration(
+                    color: Colors.green, // Cor do retângulo
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.green), // Bordas arredondadas
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 10,
+                        offset: Offset(0, 4), // Sombra para dar destaque
+                      ),
+                    ],
+                  ),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Rodada Atual \n ${rodadas[rodadaAtualIndex]}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
             ),
             Align(
               alignment: const Alignment(0, 0.2),
