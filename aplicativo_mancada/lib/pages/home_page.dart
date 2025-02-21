@@ -13,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   var nomeJogadoresController = TextEditingController(text: "");
 
   @override
-  build(BuildContext context) {
+  Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     return MaterialApp(
@@ -21,107 +21,118 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         body: Stack(
           children: [
-            // Coluna principal com os Flexibles
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Container(color: Colors.green[600]),
+            // Fundo com gradiente
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Color(0xFF43A047), Color(0xFF1B5E20)],
                 ),
-                Flexible(
-                  flex: 8,
-                  child: Container(color: Colors.white),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(color: Colors.green[600]),
-                ),
-              ],
+              ),
             ),
-            // Retângulo flutuante
+
+            // Logo do jogo
             Align(
-              alignment: const Alignment(0, -0.9),
+              alignment: const Alignment(0, -0.75),
               child: Transform.rotate(
                 angle: -0.1,
                 child: Container(
-                  width: 150, // Largura do retângulo
-                  height: 70, // Altura do retângulo
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                   decoration: BoxDecoration(
-                    color: Colors.white, // Cor do retângulo
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.green), // Bordas arredondadas
+                    border: Border.all(color: Colors.green[700]!),
                     boxShadow: const [
                       BoxShadow(
                         color: Colors.black26,
                         blurRadius: 10,
-                        offset: Offset(0, 4), // Sombra para dar destaque
+                        offset: Offset(0, 4),
                       ),
                     ],
                   ),
-                  alignment: Alignment.center,
                   child: Text(
-                  'MANCADA',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.green[600],
-                    fontWeight: FontWeight.bold,
+                    'MANCADA',
+                    style: TextStyle(
+                      fontSize: 28,
+                      color: Colors.green[700],
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
                   ),
-                ),)
-              )
+                ),
+              ),
             ),
+
+            // Campo de entrada
             Align(
-              alignment: const Alignment(0, -0.3),
+              alignment: const Alignment(0, 0.1),
               child: Container(
-                width: 300, // Largura do retângulo
-                height: null, // Altura do retângulo
+                width: 320,
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white, // Cor do retângulo
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.green), // Bordas arredondadas
+                  border: Border.all(color: Colors.green),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
                       blurRadius: 10,
-                      offset: Offset(0, 4), // Sombra para dar destaque
+                      offset: Offset(0, 4),
                     ),
                   ],
                 ),
                 child: TextField(
                   controller: nomeJogadoresController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Digite o nome dos jogadores, separados por VÍRGULA',
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: 'Digite os nomes separados por vírgula',
                     hintStyle: TextStyle(
                       fontSize: 16,
-                      color: Colors.grey,
+                      color: Colors.grey[600],
                     ),
+                    prefixIcon: const Icon(Icons.people, color: Colors.green),
                   ),
-                  maxLines: null,
-                  minLines: 5,
+                  maxLines: 4,
+                  minLines: 4,
+                  style: const TextStyle(fontSize: 18),
                 ),
-              )
+              ),
             ),
+
+            // Botão de jogar
             Align(
-              alignment: const Alignment(0, 0.4), // Botão mais para baixo
+              alignment: const Alignment(0, 0.9),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  backgroundColor: Colors.green[600],
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+                  backgroundColor: Colors.green[800],
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(8),
                   ),
+                  elevation: 5,
+                  shadowColor: Colors.black45,
                 ),
                 onPressed: () {
                   debugPrint("Jogadores: ${nomeJogadoresController.text}");
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => GamePage(nomeJogadores: nomeJogadoresController.text,)));
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => GamePage(nomeJogadores: nomeJogadoresController.text),
+                    ),
+                  );
                 },
-                child: const Text('JOGAR',
+                child: const Text(
+                  'JOGAR',
                   style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 1.2,
                   ),
+                ),
               ),
-            ))
+            ),
           ],
         ),
       ),
