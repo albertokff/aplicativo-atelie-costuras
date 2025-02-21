@@ -1,3 +1,4 @@
+import 'package:aplicativo_mancada/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:aplicativo_mancada/pages/login_page.dart';
@@ -155,9 +156,7 @@ class _GamePageState extends State<GamePage> {
 
 
   void _modalFimPartida()
-  {
-    debugPrint('Modal chamada!');
-    
+  {    
     Map<String, TextEditingController> controladores = {};
 
     pontuacao.forEach((jogador, pontos) {
@@ -173,11 +172,11 @@ class _GamePageState extends State<GamePage> {
     borderRadius: BorderRadius.circular(16),
   ),
   backgroundColor: Colors.white,
-  title: Column(
+  title: const Column(
     children: [
       Icon(Icons.emoji_events, color: Colors.amber, size: 50), // Ícone de troféu
-      const SizedBox(height: 10),
-      const Text(
+      SizedBox(height: 10),
+      Text(
         '🎉 Final de Jogo! 🎉',
         style: TextStyle(
           color: Colors.green,
@@ -189,7 +188,7 @@ class _GamePageState extends State<GamePage> {
     ],
   ),
   content: SizedBox(
-    height: 170,
+    height: 130,
     child: Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -256,33 +255,7 @@ class _GamePageState extends State<GamePage> {
         ),
       ),
       onPressed: () {
-        pontuacao.forEach((nome, dados) {
-          int pontosRodada = int.tryParse(controladores[nome]!.text) ?? 0;
-          pontuacao.update(nome, (dados) => {
-            'pontuacao': dados['pontuacao'] + pontosRodada,
-            'posicao': dados['posicao']
-          });
-        });
-
-        setState(() {
-          var jogadoresOrdenados = pontuacao.entries.toList()
-            ..sort((a, b) => a.value['pontuacao'].compareTo(b.value['pontuacao']));
-
-          for (int i = 0; i < jogadoresOrdenados.length; i++) {
-            pontuacao[jogadoresOrdenados[i].key]['posicao'] = i + 1;
-          }
-
-          _proximaRodada();
-        });
-
-        if (finalDePartida) {
-          Future.delayed(const Duration(milliseconds: 200), () {
-            _modalFimPartida();
-          });
-        }
-
-        Navigator.of(context).pop();
-        _mostrarModal();
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
       },
       child: const Text('Jogar Novamente', style: TextStyle(color: Colors.white)),
     ),
