@@ -48,7 +48,7 @@ class _GamePageState extends State<GamePage> {
 
   void _proximaRodada() {
     debugPrint(rodadaAtualIndex.toString());
-    if (rodadaAtualIndex == 1) {
+    if (rodadaAtualIndex == 8) {
         finalDePartida = true;
     } else {
       setState(() {
@@ -243,21 +243,9 @@ class _GamePageState extends State<GamePage> {
         ),
       ),
       onPressed: () {
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const LoginPage()));
+        Navigator.of(context).pop();
       },
-      child: const Text('Sair', style: TextStyle(color: Colors.white)),
-    ),
-    ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      onPressed: () {
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
-      },
-      child: const Text('Jogar Novamente', style: TextStyle(color: Colors.white)),
+      child: const Text('Fechar', style: TextStyle(color: Colors.white)),
     ),
   ],
 );
@@ -418,7 +406,7 @@ class _GamePageState extends State<GamePage> {
         ),
         // Retângulo flutuante
         Align(
-          alignment: const Alignment(0, -0.9),
+          alignment: const Alignment(0, -0.95),
           child: Transform.rotate(
             angle: -0.1,
             child: Container(
@@ -449,50 +437,72 @@ class _GamePageState extends State<GamePage> {
           ),
         ),
         Align(
-          alignment: const Alignment(0, -0.6),
-          child: Container(
-            width: 320,
-            height: 120,
-            decoration: BoxDecoration(
-              color: Colors.green,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.green),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 10,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              'Rodada Atual \n ${rodadas[rodadaAtualIndex]}',
-              style: const TextStyle(
-                fontSize: 22,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-              textAlign: TextAlign.center,
-            ),
+  alignment: const Alignment(0, -0.6),
+  child: Container(
+    width: 300,
+    height: 130,
+    decoration: BoxDecoration(
+      gradient: const LinearGradient(
+        colors: [Color(0xFF2E7D32), Color(0xFF66BB6A)], // Tons de verde
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+      ),
+      borderRadius: BorderRadius.circular(16),
+      border: Border.all(color: Colors.white.withOpacity(0.6), width: 2),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3),
+          blurRadius: 12,
+          spreadRadius: 2,
+          offset: const Offset(0, 6),
+        ),
+      ],
+    ),
+    alignment: Alignment.center,
+    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Rodada Atual',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
           ),
         ),
+        Text(
+          rodadas[rodadaAtualIndex],
+          style: const TextStyle(
+            fontSize: 24,
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+            shadows: [
+              Shadow(
+                color: Colors.black26,
+                blurRadius: 4,
+                offset: Offset(1, 2),
+              ),
+            ],
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    ),
+  ),
+),
+
         Align(
-          alignment: const Alignment(0, 0.5), // Alterado para mover a tabela mais para baixo
+          alignment: const Alignment(0, 0.6), // Alterado para mover a tabela mais para baixo
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 // Adicionando Padding para espaçar a tabela mais para baixo
-                SizedBox(height: 100), // Espaçamento adicional acima da tabela
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxHeight: 380, // Tamanho fixo para a tabela
-                  ),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Table(
+                const SizedBox(height: 100),
+                Table(
                       columnWidths: const {
                         0: FixedColumnWidth(60),
                         1: FixedColumnWidth(180),
@@ -503,8 +513,8 @@ class _GamePageState extends State<GamePage> {
                         width: 1.5,
                         style: BorderStyle.solid,
                       ),
-                      children: [
-                        const TableRow(children: [
+                      children: const [
+                        TableRow(children: [
                           TableCell(
                             child: Center(
                               child: Text(
@@ -539,8 +549,26 @@ class _GamePageState extends State<GamePage> {
                             ),
                           ),
                         ]),
-                        ..._buildTableRows(),
                       ],
+                    ), // Espaçamento adicional acima da tabela
+                ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxHeight: 330, // Tamanho fixo para a tabela
+                  ),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Table(
+                      columnWidths: const {
+                        0: FixedColumnWidth(60),
+                        1: FixedColumnWidth(180),
+                        2: FixedColumnWidth(60),
+                      },
+                      border: TableBorder.all(
+                        color: Colors.green,
+                        width: 1.5,
+                        style: BorderStyle.solid,
+                      ),
+                      children: _buildTableRows(),
                     ),
                   ),
                 ),
@@ -548,7 +576,7 @@ class _GamePageState extends State<GamePage> {
             ),
           ),
         ),
-        Align(
+        !finalDePartida ? Align(
           alignment: const Alignment(0, 0.7),
           child: ElevatedButton(
             onPressed: () {
@@ -564,13 +592,13 @@ class _GamePageState extends State<GamePage> {
             child: const Text(
               'Próxima Rodada',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
-        ),
+        ) : const Align(),
         Align(
           alignment: const Alignment(0, 0.9),
           child: ElevatedButton(
@@ -587,7 +615,7 @@ class _GamePageState extends State<GamePage> {
             child: const Text(
               'Sair',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 14,
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),

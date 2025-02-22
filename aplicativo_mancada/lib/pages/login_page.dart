@@ -15,103 +15,128 @@ class LoginPage extends StatelessWidget {
       home: Scaffold(
         body: Stack(
           children: [
-            // Coluna principal com os Flexibles
-            Row(
-              children: [
-                Flexible(
-                  flex: 1,
-                  child: Container(color: Colors.green[600]),
+            // Fundo com gradiente
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF2E7D32), Color(0xFF66BB6A)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
-                Flexible(
-                  flex: 8,
-                  child: Container(color: Colors.white),
-                ),
-                Flexible(
-                  flex: 1,
-                  child: Container(color: Colors.green[600]),
-                ),
-              ],
+              ),
             ),
-            // Retângulo flutuante
+
+            // Retângulo do título
             Align(
-              alignment: const Alignment(0, -0.7),
+              alignment: const Alignment(0, -0.65),
               child: Transform.rotate(
                 angle: -0.1,
                 child: Container(
-                  width: 375, // Largura do retângulo
-                  height: 100, // Altura do retângulo
+                  width: 330,
+                  height: 110,
                   decoration: BoxDecoration(
-                    color: Colors.white, // Cor do retângulo
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.green), // Bordas arredondadas
-                    boxShadow: const [
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: Colors.green[800]!, width: 3),
+                    boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 10,
-                        offset: Offset(0, 4), // Sombra para dar destaque
+                        color: Colors.black.withOpacity(0.3),
+                        blurRadius: 12,
+                        spreadRadius: 2,
+                        offset: const Offset(0, 6),
                       ),
                     ],
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                  'MANCADA',
-                  style: TextStyle(
-                    fontSize: 70,
-                    color: Colors.green[600],
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),)
-              )
-            ),
-            Align(
-              alignment: const Alignment(0, 0), // Botão mais para baixo
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  backgroundColor: Colors.green[600],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    'MANCADA',
+                    style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.green[800],
+                      letterSpacing: 2.0,
+                      shadows: [
+                        Shadow(
+                          color: Colors.black26,
+                          blurRadius: 5,
+                          offset: const Offset(2, 3),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
-                },
-                child: const Text('INICIAR',
-                  style: TextStyle(
-                    fontSize: 60,
-                    color: Colors.white
-                  ),
               ),
-            )),
+            ),
+
+            // Botão "INICIAR"
             Align(
-              alignment: const Alignment(0, 0.3), // Botão mais para baixo
+              alignment: const Alignment(0, 0.1),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  backgroundColor: Colors.green[600],
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 18),
+                  backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(12),
+                    side: const BorderSide(color: Colors.green, width: 2),
                   ),
+                  elevation: 8,
                 ),
                 onPressed: () {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HowGamePage()));
+                  Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => const HomePage()),
+                  );
                 },
-                child: const Text('Como jogar?',
+                child: Text(
+                  'INICIAR',
+                  style: TextStyle(
+                    fontSize: 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green[800],
+                  ),
+                ),
+              ),
+            ),
+
+            // Botão "Como Jogar?"
+            Align(
+              alignment: const Alignment(0, 0.4),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 14),
+                  backgroundColor: Colors.green[800],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  elevation: 6,
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => const HowGamePage()),
+                  );
+                },
+                child: const Text(
+                  'Como Jogar?',
                   style: TextStyle(
                     fontSize: 20,
-                    color: Colors.white
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
+                ),
               ),
-            )),
+            ),
+
+            // Rodapé
             const Align(
-              alignment: Alignment(0, 0.8), // Botão mais para baixo
+              alignment: Alignment(0, 0.85),
               child: Text(
                 '@ Desenvolvido por DARK Sistemas',
                 style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.green
+                  fontSize: 14,
+                  color: Colors.white70,
+                  fontStyle: FontStyle.italic,
                 ),
-              )),
+              ),
+            ),
           ],
         ),
       ),
