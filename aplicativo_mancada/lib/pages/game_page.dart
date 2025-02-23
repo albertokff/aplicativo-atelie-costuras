@@ -1,4 +1,3 @@
-import 'package:aplicativo_mancada/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:aplicativo_mancada/pages/login_page.dart';
@@ -47,7 +46,6 @@ class _GamePageState extends State<GamePage> {
   }
 
   void _proximaRodada() {
-    debugPrint(rodadaAtualIndex.toString());
     if (rodadaAtualIndex == 8) {
         finalDePartida = true;
     } else {
@@ -78,18 +76,17 @@ class _GamePageState extends State<GamePage> {
     Color posicaoColor;
     Icon posicaoIcon;
 
-    // Atribuindo cores e ícones para as posições
     if (posicao == 1) {
-      posicaoColor = Colors.amber; // Ouro para o 1º lugar
+      posicaoColor = Colors.amber;
       posicaoIcon = const Icon(Icons.emoji_events, color: Colors.amber);
     } else if (posicao == 2) {
-      posicaoColor = Colors.grey; // Prata para o 2º lugar
+      posicaoColor = Colors.grey;
       posicaoIcon = const Icon(Icons.emoji_events, color: Colors.grey);
     } else if (posicao == 3) {
-      posicaoColor = Colors.brown; // Bronze para o 3º lugar
+      posicaoColor = Colors.brown;
       posicaoIcon = const Icon(Icons.emoji_events, color: Colors.brown);
     } else {
-      posicaoColor = Colors.green[600]!; // Verde para os outros lugares
+      posicaoColor = Colors.green[600]!;
       posicaoIcon = const Icon(Icons.star_border, color: Colors.green); 
     }
 
@@ -101,7 +98,7 @@ class _GamePageState extends State<GamePage> {
       children: [
         TableCell(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(1.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -387,24 +384,6 @@ class _GamePageState extends State<GamePage> {
     resizeToAvoidBottomInset: true,
     body: Stack(
       children: [
-        // Coluna principal com os Flexibles
-        Row(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Container(color: Colors.green[800]), // Cor mais forte
-            ),
-            Flexible(
-              flex: 8,
-              child: Container(color: Colors.white),
-            ),
-            Flexible(
-              flex: 1,
-              child: Container(color: Colors.green[800]),
-            ),
-          ],
-        ),
-        // Retângulo flutuante
         Align(
           alignment: const Alignment(0, -0.95),
           child: Transform.rotate(
@@ -496,7 +475,7 @@ class _GamePageState extends State<GamePage> {
         Align(
           alignment: const Alignment(0, 0.6), // Alterado para mover a tabela mais para baixo
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -518,7 +497,7 @@ class _GamePageState extends State<GamePage> {
                           TableCell(
                             child: Center(
                               child: Text(
-                                'Pos',
+                                'Posição',
                                 style: TextStyle(
                                   color: Colors.green,
                                   fontSize: 16,
@@ -540,7 +519,7 @@ class _GamePageState extends State<GamePage> {
                           TableCell(
                             child: Center(
                               child: Text(
-                                'Pont',
+                                'Pontos',
                                 style: TextStyle(
                                   color: Colors.green,
                                   fontSize: 16,
@@ -553,7 +532,7 @@ class _GamePageState extends State<GamePage> {
                     ), // Espaçamento adicional acima da tabela
                 ConstrainedBox(
                   constraints: const BoxConstraints(
-                    maxHeight: 330, // Tamanho fixo para a tabela
+                    maxHeight: 337, // Tamanho fixo para a tabela
                   ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
@@ -565,7 +544,7 @@ class _GamePageState extends State<GamePage> {
                       },
                       border: TableBorder.all(
                         color: Colors.green,
-                        width: 1.5,
+                        width: 1,
                         style: BorderStyle.solid,
                       ),
                       children: _buildTableRows(),

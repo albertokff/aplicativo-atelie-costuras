@@ -65,7 +65,7 @@ class HowGamePage extends StatelessWidget {
             Align(
               alignment: const Alignment(0, 0.5),
               child: Container(
-                margin: EdgeInsets.only(left: 50, right: 50),
+                margin: const EdgeInsets.only(left: 50, right: 50),
                 width: 375,
                 height: 600,
                 decoration: BoxDecoration(
@@ -103,6 +103,19 @@ class HowGamePage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      child: Text(
+                        'Baralho: 2 Tradicionais de 52 cartas',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.green,
+                        ),
                       ),
                     ),
                     const SizedBox(

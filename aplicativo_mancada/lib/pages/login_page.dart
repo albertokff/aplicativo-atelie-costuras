@@ -15,7 +15,6 @@ class LoginPage extends StatelessWidget {
       home: Scaffold(
         body: Stack(
           children: [
-            // Fundo com gradiente
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -55,11 +54,11 @@ class LoginPage extends StatelessWidget {
                       fontWeight: FontWeight.w900,
                       color: Colors.green[800],
                       letterSpacing: 2.0,
-                      shadows: [
+                      shadows: const [
                         Shadow(
                           color: Colors.black26,
                           blurRadius: 5,
-                          offset: const Offset(2, 3),
+                          offset: Offset(2, 3),
                         ),
                       ],
                     ),
